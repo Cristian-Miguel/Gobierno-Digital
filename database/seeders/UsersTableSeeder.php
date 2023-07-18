@@ -5,10 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use App\User;
-use App\Role_User;
-use App\Role;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\RoleUser;
+use App\Models\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -25,30 +25,38 @@ class UsersTableSeeder extends Seeder
         $role->description = "Tiene acceso completo a todo el sistema";
         $role->save();
 
-        $role = new Role();
-        $role->name = 'Usuario';
-        $role->slug = 'Read';
-        $role->description = "Puede solo leer los datos del sistema";
-        $role->save();
+        $role2 = new Role();
+        $role2->name = 'Usuario';
+        $role2->slug = 'Read';
+        $role2->description = "Puede solo leer los datos del sistema";
+        $role2->save();
 
-        User::truncate();
-        $user = new User();
+        $names = [
+            'Waldo', 'Zed', 'Alfiel', 'Corenda', 'Shaina', 
+            'Gilberto', 'Constantine', 'Mic', 'Nicole', 'Lili',
+            'Sharla', 'Hilary', 'Garrik', 'Celle', 'Samuel'
+        ];
+        
         for ($i=0; $i < 15; $i++) { 
-            $user->name = Str::random(10);
-            $user->email = Str::random(10)."@hotmail.com";
+            $user = new User();
+            $user->name = $names[$i];
+            $user->email = $names[$i]."@hotmail.com";
             $user->email_verified_at = Carbon::now();
             $user->password = Hash::make('password');
-            $user->remember_token = createToken('Token')->accessToken;
             $user->save();
-            $role_user = new Role_User();
+
+            $role_user = new RoleUser();
             if( $i%2==0 ) {
-                // $role_user = 
-
+                $id = DB::Select('SELECT id FROM users ORDER BY id DESC LIMIT 1');
+                $role_user->user_id = $id[0]->id;
+                $role_user->role_id = 1;
+                $role_user->save();
             } else {
-
+                $id = DB::Select('SELECT id FROM users ORDER BY id DESC LIMIT 1');
+                $role_user->user_id = $id[0]->id;
+                $role_user->role_id = 2;
+                $role_user->save();
             }
         }
-
-
     }    
 }
