@@ -9,20 +9,11 @@
 - Redireccionar a la carpeta que se clono del proyecto
 - Ejecutar ``` composer install ``` para instalar los paquetes de vendor
 - Ejecutar el comando ``` node install ``` para instalar los paquetes de node
-- Copiamos el archivo .env.example para configurar la conexion de la base de datos de mysql con el comando
-    ``` 
-        cp .env.example .env 
-    ```
+- Copiamos el archivo .env.example para configurar la conexion de la base de datos de mysql con el comando ``` cp .env.example .env ```
 - Generamos una clave de la aplicacion con el comando ``` php artisan key:generate ```
 - Generamos la clave de JWT con el comando ``` php artisan jwt:secret ```
-- Ejecutar el comando para migrar la base de datos
-    ``` 
-        php artisan migrate
-    ```
-- Ejecutar el comando para agregar los datos de prueba para la base de datos
-    ```
-        php artisan db:seed
-    ```
+- Ejecutar el comando para migrar la base de datos ``` php artisan migrate ```
+- Ejecutar el comando para agregar los datos de prueba para la base de datos ``` php artisan db:seed ```
 - Como ultimo paso prendemos el servidor de XAMPP para que la aplicacion funcione
 
 ## Observaciones Generales
