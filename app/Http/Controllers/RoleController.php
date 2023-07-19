@@ -31,7 +31,7 @@ class RoleController extends Controller
         $role->description = $request->description;
         $role->save();
 
-        $message = "Se creo un nuevo rol";
+        $message = "Se creó un nuevo rol";
         $success = true;
         return compact('message','success');
     }
@@ -55,7 +55,7 @@ class RoleController extends Controller
         $role->description = $request->description;
         $role->save();
 
-        $message = "Se actualizo el rol";
+        $message = "Se actualizó el rol";
         $success = true;
         return compact('message','success');
     }
@@ -70,7 +70,7 @@ class RoleController extends Controller
 
         Role::findOrFail($request->id)->delete();
 
-        $message = "Se elimino el rol";
+        $message = "Se eliminó el rol";
         $success = true;
         return compact('message','success');
     }

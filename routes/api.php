@@ -16,7 +16,7 @@ use App\Http\Controllers\RoleController;
 |
 */
 
-/*** Inicio de sesion ***/
+/*** Inicio de sesión ***/
 Route::post('/login',             [UserController::class, 'login']);
 
 Route::middleware('auth:api')->group(function(){
@@ -29,7 +29,7 @@ Route::middleware('auth:api')->group(function(){
     Route::get('/listar_usuarios',     [UserController::class, 'index']);
     Route::get('/mostrar_usuario',     [UserController::class, 'show']);
 
-    /*** Rutas de Role  ***/
+    /*** Rutas de Rol  ***/
     Route::post('/crear_rol',     [RoleController::class, 'store']);
     Route::put('/actualizar_rol', [RoleController::class, 'update']);
     Route::delete('/borrar_rol',  [RoleController::class, 'destroy']);

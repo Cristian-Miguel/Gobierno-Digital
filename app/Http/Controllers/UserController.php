@@ -62,7 +62,7 @@ class UserController extends Controller
         $role_user->role_id = $request->role_id;
         $role_user->save();
 
-        $message = "Se creo un nuevo usuario";
+        $message = "Se creó un nuevo usuario";
         $success = true;
         return compact('message','success');
     }
@@ -93,7 +93,7 @@ class UserController extends Controller
         $role_user->role_id = $request->role_id;
         $role_user->save();
 
-        $message = "Se actualizo el usuario";
+        $message = "Se actualizó el usuario";
         $success = true;
         return compact('message','success');
     }
@@ -109,7 +109,7 @@ class UserController extends Controller
         RoleUser::findOrFail($request->id)->delete();
         User::findOrFail($request->id)->delete();
 
-        $message = "Se elimino un usuario";
+        $message = "Se eliminó un usuario";
         $success = true;
         return compact('message','success');
     }
