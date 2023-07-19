@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\User;
+use App\Models\RoleUser;
 
 class UserController extends Controller
 {
@@ -32,81 +35,81 @@ class UserController extends Controller
         return compact('success');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        // Auth::guard('api')->
-        $list = User::all();
-        return compact('list');
+        $list_users = User::all();
+        return compact('list_users');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        if( RoleUser::WHERE( 'user_id', Auth::guard('api')->user()->id )->get()[0]->role_id != 1 ) {
+            $message = "Acceso denegado";
+            $success = false;
+            return compact('message','success');
+        }
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->email_verified_at = Carbon::now();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        $role_user = new RoleUser();
+        $id_user = User::WHERE('email',$request->email)->get('id');
+        $role_user->user_id = $id_user[0]->id;
+        $role_user->role_id = $request->role_id;
+        $role_user->save();
+
+        $message = "Se creo un nuevo usuario";
+        $success = true;
+        return compact('message','success');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $user = User::findOrFail($request->user_id);
+        return compact('user');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Request $request)
     {
-        //
+        if( RoleUser::WHERE( 'user_id', Auth::guard('api')->user()->id )->get()[0]->role_id != 1 ) {
+            $message = "Acceso denegado";
+            $success = false;
+            return compact('message','success');
+        }
+
+        $user = User::findOrFail($request->user_id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        $id_role_user = RoleUser::WHERE( 'user_id', $request->user_id )->get()[0]->id;
+        $role_user = RoleUser::findOrFail($id_role_user);
+        $role_user->user_id = $request->user_id;
+        $role_user->role_id = $request->role_id;
+        $role_user->save();
+
+        $message = "Se actualizo el usuario";
+        $success = true;
+        return compact('message','success');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Request $request)
     {
-        //
-    }
+        if( RoleUser::WHERE( 'user_id', Auth::guard('api')->user()->id )->get()[0]->role_id != 1 ) {
+            $message = "Acceso denegado";
+            $success = false;
+            return compact('message','success');
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        RoleUser::findOrFail($request->id)->delete();
+        User::findOrFail($request->id)->delete();
+
+        $message = "Se elimino un usuario";
+        $success = true;
+        return compact('message','success');
     }
 }

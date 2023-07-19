@@ -23,14 +23,15 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [UserController::class, 'logout']);
 
     /*** Rutas del Usuario  ***/
-    Route::post('/crear_usuario',     [UserController::class, 'create']);
-    Route::put('/actualizar_usuario', [UserController::class, 'edit']);
+    Route::post('/crear_usuario',     [UserController::class, 'store']);
+    Route::put('/actualizar_usuario', [UserController::class, 'update']);
     Route::delete('/borrar_usuario',  [UserController::class, 'destroy']);
-    Route::get('/listar_usuario',     [UserController::class, 'index']);
+    Route::get('/listar_usuarios',     [UserController::class, 'index']);
+    Route::get('/mostrar_usuario',     [UserController::class, 'show']);
 
     /*** Rutas de Role  ***/
-    Route::post('/crear_rol',     [RoleController::class, 'create']);
-    Route::put('/actualizar_rol', [RoleController::class, 'edit']);
+    Route::post('/crear_rol',     [RoleController::class, 'store']);
+    Route::put('/actualizar_rol', [RoleController::class, 'update']);
     Route::delete('/borrar_rol',  [RoleController::class, 'destroy']);
     Route::get('/listar_rol',     [RoleController::class, 'index']);
 });
