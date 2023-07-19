@@ -34,4 +34,5 @@ Route::middleware('auth:api')->group(function(){
     Route::put('/actualizar_rol', [RoleController::class, 'update']);
     Route::delete('/borrar_rol',  [RoleController::class, 'destroy']);
     Route::get('/listar_rol',     [RoleController::class, 'index']);
+    Route::get('/mostrar_rol',     [RoleController::class, 'show']);
 });

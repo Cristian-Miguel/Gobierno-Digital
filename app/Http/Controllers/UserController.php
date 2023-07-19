@@ -35,6 +35,7 @@ class UserController extends Controller
         return compact('success');
     }
 
+    //Funciones CRUD
     public function index()
     {
         $list_users = User::all();
